@@ -1,32 +1,53 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var data = [];
-    var limit = 5;
-    var currentPage = 1;
-    var totalPage = 1;
-    var prevButton = document.getElementById('prevPage');
-    var nextButton = document.getElementById('nextPage');
+    let data = [];
+    let limit = 5;
+    let currentPage = 1;
+    let totalPage = 1;
 
-    document.getElementById("searchBox").addEventListener("keydown", handleKeyPress);
+    const searchBox = document.getElementById('searchBox');
+    const prevButton = document.getElementById('prevPage');
+    const nextButton = document.getElementById('nextPage');
 
-document.addEventListener("DOMContentLoaded", function() {
-    prevButton = document.getElementById('prevPage');
-    nextButton = document.getElementById('nextPage');
-    // rest of your script here...
-});
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        var searchValue = event.target.value;
-        if (!searchValue || searchValue.trim() === '') {
+    searchBox.addEventListener("keydown", handleKeyPress);
+    prevButton.addEventListener("click", prevPage);
+    nextButton.addEventListener("click", nextPage);
+
+    function handleKeyPress(event) {
+        if (event.key !== 'Enter') return;
+
+        const searchValue = event.target.value.trim();
+        if (!searchValue) {
             displayMessage('Start Searching');
             return;
         }
 
-        currentPage = 1; 
+        currentPage = 1;
+        displayMessage('', true);
+        fetchData(searchValue, currentPage, updateCityCount());
 
-        displayMessage('', true); 
-        fetchData(searchValue, 1, updateCityCount());
     }
-}
+
+    function prevPage() {
+        if (currentPage <= 1) return;
+
+        currentPage--;
+        fetchData(searchBox.value, currentPage, limit);
+    }
+
+    function nextPage() {
+        if (currentPage >= totalPage) return;
+
+        currentPage++;
+        fetchData(searchBox.value, currentPage, limit);
+    }
+
+    function updateCityCount() {
+        limit = parseInt(document.getElementById('city-count').value, 10);
+        return limit;
+    }
+
+    document.getElementById("nextPage").addEventListener("click", nextPage);
+    document.getElementById("prevPage").addEventListener("click", prevPage);
 
 function updateCityCount() {
     limit = document.getElementById('city-count').value; 
@@ -60,6 +81,7 @@ function fetchData(searchValue, currentPage, limit) {
     });
 }
 
+
 function displayData() {
     var tableBody = document.getElementById('tableBody'); 
     tableBody.innerHTML = ""; 
@@ -68,7 +90,7 @@ function displayData() {
         var row = document.createElement('tr');
         row.innerHTML = `<td>${((currentPage - 1) * limit) + (index + 1)}</td>
                          <td>${item.name}</td>
-                         <td><img src="https://flagsapi.com/${item.countryCode}/flat/64.png" style="width: 32px; height: 32px;">${item.countryCode}</td>`;
+                         <td><img src="https://flagsapi.com/${item.countryCode}/flat/64.png" style="width: 32px; height: 32px;" alt="Flag of ${item.name}">${item.countryCode}</td>`;
         tableBody.appendChild(row);
     });
 
@@ -86,28 +108,6 @@ document.addEventListener('keydown', function(event) {
         document.getElementById('searchBox').focus();
     }
 });
-
-
-
-function nextPage() {
-    if (currentPage < totalPage) {
-        currentPage++;
-        prevButton.disabled = false;
-        if(currentPage===totalPage){nextButton.disabled = true;}
-        fetchData(document.getElementById('searchBox').value, currentPage, limit);
-    }
-}
-
-function prevPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        nextButton.disabled = false;
-        if(currentPage===1){prevButton.disabled = true;}
-        fetchData(document.getElementById('searchBox').value, currentPage, limit);
-    }
-}
-
-
 function updatePageInfo() {
     document.getElementById('page-info').innerHTML = `Page ${currentPage} of ${totalPage}`;
 }

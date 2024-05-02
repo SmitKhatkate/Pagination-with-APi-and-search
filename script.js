@@ -1,10 +1,18 @@
-var data = [];
-var limit = 5;
-var currentPage = 1;
-var totalPage = 1;
+document.addEventListener("DOMContentLoaded", function() {
+    var data = [];
+    var limit = 5;
+    var currentPage = 1;
+    var totalPage = 1;
+    var prevButton = document.getElementById('prevPage');
+    var nextButton = document.getElementById('nextPage');
 
-document.getElementById("searchBox").addEventListener("keydown", handleKeyPress);
+    document.getElementById("searchBox").addEventListener("keydown", handleKeyPress);
 
+document.addEventListener("DOMContentLoaded", function() {
+    prevButton = document.getElementById('prevPage');
+    nextButton = document.getElementById('nextPage');
+    // rest of your script here...
+});
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
         var searchValue = event.target.value;
@@ -29,7 +37,7 @@ function fetchData(searchValue, currentPage, limit) {
     var options = {
         method: 'GET',
         url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/adminDivisions',
-        params: {countryIds: 'IN', namePrefix: searchValue, offset: (currentPage - 1) * limit, limit: limit},
+        params: {namePrefix: searchValue, offset: (currentPage - 1) * limit, limit: limit},
         headers: {
             'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com',
             'x-rapidapi-key': '96a18ad53amsh441cb924051a530p1f0d6djsndf184295b94f' 
@@ -72,10 +80,20 @@ function displayMessage(message, isLoading = false) {
     tableBody.innerHTML = `<tr><td colspan='3'>${message}</td></tr>`;
     document.getElementById('spinner').style.display = isLoading ? 'block' : 'none';
 }
+document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+        event.preventDefault(); 
+        document.getElementById('searchBox').focus();
+    }
+});
+
+
 
 function nextPage() {
     if (currentPage < totalPage) {
         currentPage++;
+        prevButton.disabled = false;
+        if(currentPage===totalPage){nextButton.disabled = true;}
         fetchData(document.getElementById('searchBox').value, currentPage, limit);
     }
 }
@@ -83,10 +101,14 @@ function nextPage() {
 function prevPage() {
     if (currentPage > 1) {
         currentPage--;
+        nextButton.disabled = false;
+        if(currentPage===1){prevButton.disabled = true;}
         fetchData(document.getElementById('searchBox').value, currentPage, limit);
     }
 }
 
+
 function updatePageInfo() {
     document.getElementById('page-info').innerHTML = `Page ${currentPage} of ${totalPage}`;
 }
+});

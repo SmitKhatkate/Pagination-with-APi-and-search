@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City Data Table</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- Search box -->
+    <div class="search-container">
+        
+        <input type="text" id="searchBox" placeholder="Search places..." class="search-box" onkeydown="handleKeyPress(event)" aria-describedby="shortcutLabel">
+        <div id="shortcutLabel" class="shortcut">Ctrl + /</div>
+    </div>
+
+    <!-- Table to display search results -->
+    <table id="city-table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">City</th>
+                <th scope="col">Country</th>
+                
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+                <td colspan="3">Start Searching</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="spinner" style="display: none;">Loading...</div>
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <button onclick="prevPage()">Prev</button>
+        <span id="page-info">Page 1 of 10</span>
+        <button onclick="nextPage()">Next</button>
+        <div class="city-limit">
+            <label for="city-count">Cities per page:</label>
+            <input type="number" id="city-count" value="5" min="1" max="10" onchange="updateCityCount()">
+        </div>
+    </div>
+
+</body>
+</html>

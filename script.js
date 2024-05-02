@@ -49,33 +49,33 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("nextPage").addEventListener("click", nextPage);
     document.getElementById("prevPage").addEventListener("click", prevPage);
 
-function updateCityCount() {
-    limit = document.getElementById('city-count').value; 
-    return limit;
-}
+    function updateCityCount() {
+        limit = parseInt(document.getElementById('city-count').value, 10) || 0;
+        return limit;
+    }
 
-function fetchData(searchValue, currentPage, limit) {
-    var options = {
-        method: 'GET',
-        url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/adminDivisions',
-        params: {namePrefix: searchValue, offset: (currentPage - 1) * limit, limit: limit},
-        headers: {
-            'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com',
-            'x-rapidapi-key': '96a18ad53amsh441cb924051a530p1f0d6djsndf184295b94f' 
-        }
-    };
+    function fetchData(searchValue, currentPage, limit) {
+        var options = {
+            method: 'GET',
+            url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/adminDivisions',
+            params: {namePrefix: searchValue, offset: (currentPage - 1) * limit, limit: limit},
+            headers: {
+                'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com',
+                'x-rapidapi-key': '96a18ad53amsh441cb924051a530p1f0d6djsndf184295b94f'
+            }
+        };
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
         data = response.data.data;
-        totalPage = Math.ceil(response.data.metadata.total_count / limit);
-        if (data.length > 0) {
+        totalPage = Math.ceil(Number(response.data.metadata.total_count) / Number(limit));
+        if(data.length > 0) {
             displayData();
-            updatePageInfo(); 
+            updatePageInfo();
         } else {
             displayMessage('No results found');
-            document.querySelector('.pagination').style.display = 'none'; 
+            document.querySelector('.pagination').style.display = 'none';
         }
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.error(error);
         displayMessage('Error fetching data');
     });
@@ -109,6 +109,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 function updatePageInfo() {
-    document.getElementById('page-info').innerHTML = `Page ${currentPage} of ${totalPage}`;
+    document.getElementById('page-info').innerHTML = `  Page ${currentPage} `;
 }
 });

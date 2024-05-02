@@ -60,11 +60,11 @@ function displayData() {
         var row = document.createElement('tr');
         row.innerHTML = `<td>${((currentPage - 1) * limit) + (index + 1)}</td>
                          <td>${item.name}</td>
-                         <td><img src="https://www.countryflags.io/${item.countryCode}/flat/32.png">${item.countryCode}</td>`;
+                         <td><img src="https://flagsapi.com/${item.countryCode}/flat/64.png" style="width: 32px; height: 32px;">${item.countryCode}</td>`;
         tableBody.appendChild(row);
     });
 
-    document.getElementById('spinner').style.display = 'none'; // Hide spinner
+    document.getElementById('spinner').style.display = 'none'; 
 }
 
 function displayMessage(message, isLoading = false) {

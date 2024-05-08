@@ -1,0 +1,22 @@
+div{
+    text-align: center;
+    background-color: rgb(139, 157, 158);
+    border: 4px solid black;
+    padding-bottom: 10px;
+    color: white;
+    height: auto;
+}
+h2{
+    font-size: 4vw;
+    
+}
+button {
+    padding: 8px 16px;
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid blue;
+}
+
+button:focus {
+    outline: 2px solid blue;
+}
